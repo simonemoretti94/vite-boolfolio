@@ -9,6 +9,9 @@ export default {
       projects_endpoint: '/api/projects',
       projects: '',
       search_text: '',
+      email: '',
+      name: '',
+      message: '',
     }
   },
   methods: {
@@ -31,7 +34,32 @@ export default {
     goTo(url) {
       console.log('goTo URL: ', url);
       this.callApi(url);
-    }
+    },
+
+    // contact form
+    submitMessage() {
+
+      // creating the payload
+      const payload = {
+        email: this.email,
+        name: this.name,
+        message: this.message,
+      }
+      
+      console.log(payload);
+
+      // send a post request
+      axios.post('http://127.0.0.1:8000/api/contacts' , payload)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+
+      });
+
+      //handle the response
+
+    },
   },
   mounted() {
     const url = this.base_api_url + this.projects_endpoint;
@@ -43,6 +71,78 @@ export default {
 </script>
 
 <template>
+
+  <button
+    class="btn btn-link position-fixed end-0"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#contactsForm"
+    aria-controls="contactsForm"
+  >
+    Contacts
+  </button>
+  
+  <div
+    class="offcanvas offcanvas-end"
+    data-bs-backdrop="static"
+    tabindex="-1"
+    id="contactsForm"
+    aria-labelledby="staticBackdropLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="staticBackdropLabel">
+          Get in touch
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <div>
+        <p>Contact me, I'll get back as soon as possible</p>
+
+        <form @submit.prevent="submitMessage()">
+        @csrf
+
+        <div class="mb-3">
+            <label for="email" class="form-label">E-mail</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelper"
+                    placeholder="abc@mail.com" v-model="email" />
+                <small id="helpId" class="form-text text-muted">Type a valid e-mail</small>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <div class="mb-3">
+                <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelper"
+                    placeholder="John Doe" v-model="name" />
+                <small id="helpId" class="form-text text-muted">Type your name and surname</small>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="" class="form-label">Message</label>
+            <textarea class="form-control" name="message" id="message" rows="6" v-model="message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            Submit
+        </button>
+
+    </form>
+
+      </div>
+  
+    </div>
+  </div>
+  
+
   <section class="container">
     <h1 class="my-2">Projects:</h1>
 
