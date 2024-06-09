@@ -151,7 +151,7 @@ export default {
             <label for="email" class="form-label">E-mail</label>
             <div class="mb-3">
                 <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelper"
-                    placeholder="abc@mail.com" v-model="email" value="simone@ciao.it"/>
+                    placeholder="abc@mail.com" v-model="email"/>
                 <small id="helpId" class="form-text text-muted">Type a valid e-mail</small>
             </div>
 
@@ -161,7 +161,7 @@ export default {
             <label for="name" class="form-label">Name</label>
             <div class="mb-3">
                 <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelper"
-                    placeholder="John Doe" v-model="name" value="simone moretti" />
+                    placeholder="John Doe" v-model="name"/>
                 <small id="helpId" class="form-text text-muted">Type your name and surname</small>
             </div>
 
@@ -169,7 +169,7 @@ export default {
 
         <div class="mb-3">
             <label for="" class="form-label">Message</label>
-            <textarea class="form-control" name="message" id="message" rows="6" v-model="message" value="Mi chiamo simone, così mi presento. ciao ragazzi"></textarea>
+            <textarea class="form-control" name="message" id="message" rows="6" v-model="message"></textarea>
         </div>
         <button type="submit" class="btn btn-primary" :class="{'disabled' : this.loading}">
            {{ loading ? 'Sending...📧' : 'Submit'}}
