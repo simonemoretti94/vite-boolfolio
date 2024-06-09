@@ -12,6 +12,9 @@ export default {
       email: '',
       name: '',
       message: '',
+      success: false,
+      errors: false,
+      loading: false,
     }
   },
   methods: {
@@ -38,6 +41,7 @@ export default {
 
     // contact form
     submitMessage() {
+      this.loading = true;
 
       // creating the payload
       const payload = {
@@ -52,6 +56,23 @@ export default {
       axios.post('http://127.0.0.1:8000/api/contacts' , payload)
       .then(response => {
         console.log(response);
+        this.loading = false;
+
+        if(response.data.success)
+        {
+          this.success = 'Thanks for your message';
+          this.error = false;
+          this.email = '';
+          this.name = '';
+          this.message = '';
+        }
+        else
+        {
+          console.log(response);
+          this.errors = response.data.errors;
+          this.success = false;
+        }
+
       })
       .catch(error => {
 
@@ -102,6 +123,26 @@ export default {
     </div>
     <div class="offcanvas-body">
       <div>
+        <div
+          class="alert alert-success"
+          role="alert"
+          v-if="success"
+        >
+          <strong>Success</strong> {{ success }}
+        </div>
+
+        <div
+          class="alert alert-danger"
+          role="alert"
+          v-if="errors"
+        >
+          <strong>There are some errors:</strong>
+          <ul>
+            <li v-for="error in errors">{{ error[0] }}</li>
+          </ul>
+        </div>
+        
+
         <p>Contact me, I'll get back as soon as possible</p>
 
         <form @submit.prevent="submitMessage()">
@@ -110,7 +151,7 @@ export default {
             <label for="email" class="form-label">E-mail</label>
             <div class="mb-3">
                 <input type="text" class="form-control" name="email" id="email" aria-describedby="emailHelper"
-                    placeholder="abc@mail.com" v-model="email" />
+                    placeholder="abc@mail.com" v-model="email" value="simone@ciao.it"/>
                 <small id="helpId" class="form-text text-muted">Type a valid e-mail</small>
             </div>
 
@@ -120,7 +161,7 @@ export default {
             <label for="name" class="form-label">Name</label>
             <div class="mb-3">
                 <input type="text" class="form-control" name="name" id="name" aria-describedby="nameHelper"
-                    placeholder="John Doe" v-model="name" />
+                    placeholder="John Doe" v-model="name" value="simone moretti" />
                 <small id="helpId" class="form-text text-muted">Type your name and surname</small>
             </div>
 
@@ -128,10 +169,10 @@ export default {
 
         <div class="mb-3">
             <label for="" class="form-label">Message</label>
-            <textarea class="form-control" name="message" id="message" rows="6" v-model="message"></textarea>
+            <textarea class="form-control" name="message" id="message" rows="6" v-model="message" value="Mi chiamo simone, così mi presento. ciao ragazzi"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">
-            Submit
+        <button type="submit" class="btn btn-primary" :class="{'disabled' : this.loading}">
+           {{ loading ? 'Sending...📧' : 'Submit'}}
         </button>
 
     </form>
