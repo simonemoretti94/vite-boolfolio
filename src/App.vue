@@ -105,8 +105,7 @@ export default {
         <p>Contact me, I'll get back as soon as possible</p>
 
         <form @submit.prevent="submitMessage()">
-        @csrf
-
+    
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
             <div class="mb-3">
